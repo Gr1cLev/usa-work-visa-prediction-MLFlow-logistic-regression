@@ -1,11 +1,24 @@
+import os
+from pathlib import Path
+
+import joblib
+import pandas as pd
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
-import joblib, os, pandas as pd
-from pathlib import Path
-from dotenv import load_dotenv
-load_dotenv(dotenv_path=Path(__file__).resolve().parents[2] / ".env")
 
+BASE_DIR = Path(__file__).resolve().parent
+ENV_CANDIDATES = [
+    BASE_DIR / ".env",
+    BASE_DIR.parent / ".env",
+]
+for candidate in ENV_CANDIDATES:
+    if candidate.is_file():
+        load_dotenv(dotenv_path=candidate)
+        break
+else:
+    load_dotenv()
 
 MODEL_PATH = os.getenv("MODEL_PATH", "artifacts/model.joblib")
 
