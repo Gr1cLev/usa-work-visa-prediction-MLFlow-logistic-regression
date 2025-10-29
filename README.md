@@ -1,6 +1,6 @@
 # usa-work-visa-prediction-ml-logistic-regression
 
-This repository hosts project that estimates whether a United States work visa Labor Condition Application (LCA) is likely to be **certified** or **denied**. The classifier uses a logistic regression model and demonstrates an end-to-end MLOps workflow: data ingestion, validation, feature engineering, training with MLflow tracking, evaluation, monitoring with Evidently, and a FastAPI + static web UI for quick experiments.
+This repository hosts a teaching project that estimates whether a United States work visa Labor Condition Application (LCA) is likely to be **certified** or **denied**. The classifier uses a logistic regression model and demonstrates an end-to-end MLOps workflow: data ingestion, validation, feature engineering, training with MLflow tracking, evaluation, monitoring with Evidently, and a FastAPI + static web UI for quick experiments.
 
 > **Important:** this project is for learning only. The predictions are generated from public LCA disclosure data and a lightweight model. They are **not** a substitute for legal advice or official determinations.
 
@@ -9,9 +9,15 @@ This repository hosts project that estimates whether a United States work visa L
 - Validate input tables against a Pandera schema before training.
 - Build features, train a logistic regression model, and log metrics to MLflow.
 - Evaluate the trained model, export summary artifacts, and generate an Evidently data drift report.
-- Serve predictions through a FastAPI endpoint and interact via the redesigned dropdown-friendly UI in `docs/ui`.
+- Serve predictions through a FastAPI endpoint and interact via the dropdown-friendly UI in `docs/ui`.
 
-## Quickstart
+## Live demo
+- **User interface** (GitHub Pages): https://gr1clev.github.io/usa-work-visa-prediction-ml-logistic-regression/ui/  
+  Saat membuka halaman, set kolom "Alamat API" ke `https://gchrd-visa-lca-api.hf.space` sebelum menekan tombol Prediksi.
+- **Prediction API** (Hugging Face Space): https://gchrd-visa-lca-api.hf.space/  
+  Endpoint kesehatan tersedia di `/health`, sedangkan prediksi bisa diakses via `/predict` dengan payload JSON.
+
+## Start
 ```bash
 pip install -r requirements.txt
 
@@ -40,6 +46,15 @@ Set these in a `.env` file (see `.env.example`) or your shell as needed:
 | `DATA_GOV_API_URL` | (Optional) Override the CKAN endpoint. Defaults to the standard data.gov URL. |
 | `LCA_YEAR` | (Optional) Prefer a specific fiscal year when searching for LCA resources. |
 | `MAX_ROWS` | (Optional) Limit the number of rows ingested for quicker experiments. Defaults to 40000. |
+| `MODEL_PATH` | (Optional) Path to the serialized model when serving. Defaults to `artifacts/model.joblib`. |
+
+The serving app will automatically look for a `.env` file beside the executable or one directory above it (for example `/app/.env` or the project root). If none is present it simply relies on environment variables.
+
+## Serving and deployment
+- **Local FastAPI**: run `uvicorn src.serving.app:app --reload --port 8000` inside the project to expose the prediction API.
+- **Docker / Hugging Face Space**: the `serving/` folder contains a lightweight Dockerfile and requirements file. It copies `app.py` and `model.joblib`, installs dependencies, and sets `MODEL_PATH` automatically. Push the folder to a Space (or build the image yourself) and the container will pick up `.env` if you add it next to `app.py`.
+- **Static UI**: once the API is reachable, open `docs/ui/index.html` in a browser. Every input is a dropdown with a "Lainnya" option so non-technical users can still enter custom values.
+
 
 ## Repository layout
 ```
