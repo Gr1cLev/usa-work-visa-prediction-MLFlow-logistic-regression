@@ -1,0 +1,8 @@
+target: CASE_STATUS_BIN
+numeric:
+  - WAGE_RATE
+categorical:
+  - FULL_TIME_POSITION
+  - EMPLOYER_STATE
+  - WORKSITE_STATE
+  - SOC_CODE

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Visa LCA Demo - Prediksi</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <main class="container">
+    <h1>Simulasi Visa LCA</h1>
+    <section class="intro">
+      <p class="lead">
+        Aplikasi ini membantu Anda mensimulasikan hasil permohonan visa kerja (Labor Condition Application/LCA).
+        Cukup pilih atau isi data utama, lalu model akan memperkirakan apakah permohonan cenderung disetujui atau ditolak.
+      </p>
+      <p class="steps">
+        <strong>Cara pakai singkat:</strong> tetapkan alamat API (misal <code>http://localhost:8000</code>),
+        pilih pilihan yang paling cocok, gunakan opsi "Lainnya" bila butuh data khusus, kemudian tekan tombol Prediksi.
+      </p>
+    </section>
+    <section class="api-box">
+      <label for="apiUrl">Alamat API</label>
+      <input id="apiUrl" placeholder="http://localhost:8000" />
+      <button id="saveApi" type="button">Simpan</button>
+      <small id="apiStatus"></small>
+    </section>
+    <form id="predictForm">
+      <fieldset>
+        <legend>Isi Data Permohonan</legend>
+        <div class="grid">
+          <div class="field">
+            <label for="fullTimeSelect">Status kerja utama</label>
+            <select id="fullTimeSelect" data-other-target="#fullTimeOtherWrap">
+              <option value="Y" selected>Pekerjaan tetap (Y)</option>
+              <option value="N">Paruh waktu atau fleksibel (N)</option>
+              <option value="OTHER">Lainnya</option>
+            </select>
+            <div id="fullTimeOtherWrap" class="other-input hidden">
+              <input id="fullTimeOther" placeholder="Tulis status lain" />
+              <small>Contoh: kontrak, musiman.</small>
+            </div>
+          </div>
+          <div class="field">
+            <label for="employerStateSelect">Lokasi kantor pemberi kerja</label>
+            <select id="employerStateSelect" data-other-target="#employerStateOtherWrap">
+              <option value="CA" selected>California (CA)</option>
+              <option value="NY">New York (NY)</option>
+              <option value="TX">Texas (TX)</option>
+              <option value="WA">Washington (WA)</option>
+              <option value="MA">Massachusetts (MA)</option>
+              <option value="OTHER">Lainnya</option>
+            </select>
+            <div id="employerStateOtherWrap" class="other-input hidden">
+              <input id="employerStateOther" maxlength="2" placeholder="Tulis kode negara bagian" />
+              <small>Gunakan kode dua huruf, misal FL.</small>
+            </div>
+          </div>
+          <div class="field">
+            <label for="worksiteStateSelect">Lokasi tempat bekerja</label>
+            <select id="worksiteStateSelect" data-other-target="#worksiteStateOtherWrap">
+              <option value="CA" selected>California (CA)</option>
+              <option value="NY">New York (NY)</option>
+              <option value="TX">Texas (TX)</option>
+              <option value="WA">Washington (WA)</option>
+              <option value="MA">Massachusetts (MA)</option>
+              <option value="OTHER">Lainnya</option>
+            </select>
+            <div id="worksiteStateOtherWrap" class="other-input hidden">
+              <input id="worksiteStateOther" maxlength="2" placeholder="Tulis kode negara bagian" />
+              <small>Gunakan kode dua huruf, misal FL.</small>
+            </div>
+          </div>
+          <div class="field">
+            <label for="socSelect">Kode jabatan (SOC)</label>
+            <select id="socSelect" data-other-target="#socOtherWrap">
+              <option value="15-1252" selected>Software Developers (15-1252)</option>
+              <option value="15-1245">Database Administrators (15-1245)</option>
+              <option value="15-2051">Financial Analysts (15-2051)</option>
+              <option value="15-1256">Data Scientists (15-1256)</option>
+              <option value="11-1021">General and Operations Managers (11-1021)</option>
+              <option value="OTHER">Lainnya</option>
+            </select>
+            <div id="socOtherWrap" class="other-input hidden">
+              <input id="socOther" placeholder="Masukkan kode SOC lain" />
+              <small>Contoh format: 15-1299.</small>
+            </div>
+          </div>
+          <div class="field">
+            <label for="wageSelect">Perkiraan gaji tahunan (USD)</label>
+            <select id="wageSelect" data-other-target="#wageOtherWrap">
+              <option value="90000">90,000</option>
+              <option value="110000" selected>110,000</option>
+              <option value="125000">125,000</option>
+              <option value="140000">140,000</option>
+              <option value="160000">160,000</option>
+              <option value="OTHER">Lainnya</option>
+            </select>
+            <div id="wageOtherWrap" class="other-input hidden">
+              <input id="wageOther" type="number" step="0.01" min="0" placeholder="Masukkan angka gaji" />
+              <small>Tulis angka dalam USD, contoh: 123000.</small>
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <button type="submit">Prediksi</button>
+        </div>
+      </fieldset>
+    </form>
+    <div id="formMessage" class="form-message hidden"></div>
+    <section id="result" class="result hidden">
+      <h2>Hasil Prediksi</h2>
+      <div id="resultContent"></div>
+    </section>
+    <footer>
+      <a href="../report.html" target="_blank">Lihat laporan data drift</a>
+      <span aria-hidden="true">|</span>
+      <a href="../eval.json" target="_blank">Lihat ringkasan evaluasi</a>
+    </footer>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+columns:
+  - {name: CASE_STATUS, dtype: string}
+  - {name: FULL_TIME_POSITION, dtype: string}
+  - {name: EMPLOYER_STATE, dtype: string}
+  - {name: WORKSITE_STATE, dtype: string}
+  - {name: SOC_CODE, dtype: string}
+  - {name: WAGE_RATE, dtype: float}
