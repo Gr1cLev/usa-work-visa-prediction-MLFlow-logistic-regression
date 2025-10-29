@@ -12,7 +12,7 @@ This repository hosts a teaching project that estimates whether a United States 
 - Serve predictions through a FastAPI endpoint and interact via the dropdown-friendly UI in `docs/ui`.
 
 ## Live demo
-- **User interface** (GitHub Pages): https://gr1clev.github.io/usa-work-visa-prediction-ml-logistic-regression/ui/  
+- **User interface** (GitHub Pages): https://gr1clev.github.io/usa-work-visa-prediction-MLFlow-logistic-regression/ui/
   When the page loads, set the "API Address" field to `https://gchrd-visa-lca-api.hf.space` before clicking **Predict**.
 - **Prediction API** (Hugging Face Space): https://gchrd-visa-lca-api.hf.space/  
   A health check is available at `/health`, and predictions can be requested via `/predict` with a JSON payload.
