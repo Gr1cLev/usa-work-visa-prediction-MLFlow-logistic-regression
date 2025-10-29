@@ -1,6 +1,6 @@
 # usa-work-visa-prediction-ml-logistic-regression
 
-This repository hosts a teaching project that estimates whether a United States work visa Labor Condition Application (LCA) is likely to be **certified** or **denied**. The classifier uses a logistic regression model and demonstrates an end-to-end MLOps workflow: data ingestion, validation, feature engineering, training with MLflow tracking, evaluation, monitoring with Evidently, and a FastAPI + static web UI for quick experiments.
+This repository hosts project that estimates whether a United States work visa Labor Condition Application (LCA) is likely to be **certified** or **denied**. The classifier uses a logistic regression model and demonstrates an end-to-end MLOps workflow: data ingestion, validation, feature engineering, training with MLflow tracking, evaluation, monitoring with Evidently, and a FastAPI + static web UI for quick experiments.
 
 > **Important:** this project is for learning only. The predictions are generated from public LCA disclosure data and a lightweight model. They are **not** a substitute for legal advice or official determinations.
 
