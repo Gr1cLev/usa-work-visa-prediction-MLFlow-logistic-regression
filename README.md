@@ -13,11 +13,11 @@ This repository hosts a teaching project that estimates whether a United States 
 
 ## Live demo
 - **User interface** (GitHub Pages): https://gr1clev.github.io/usa-work-visa-prediction-ml-logistic-regression/ui/  
-  Saat membuka halaman, set kolom "Alamat API" ke `https://gchrd-visa-lca-api.hf.space` sebelum menekan tombol Prediksi.
+  When the page loads, set the "API Address" field to `https://gchrd-visa-lca-api.hf.space` before clicking **Predict**.
 - **Prediction API** (Hugging Face Space): https://gchrd-visa-lca-api.hf.space/  
-  Endpoint kesehatan tersedia di `/health`, sedangkan prediksi bisa diakses via `/predict` dengan payload JSON.
+  A health check is available at `/health`, and predictions can be requested via `/predict` with a JSON payload.
 
-## Start
+## Quickstart
 ```bash
 pip install -r requirements.txt
 
@@ -53,7 +53,7 @@ The serving app will automatically look for a `.env` file beside the executable 
 ## Serving and deployment
 - **Local FastAPI**: run `uvicorn src.serving.app:app --reload --port 8000` inside the project to expose the prediction API.
 - **Docker / Hugging Face Space**: the `serving/` folder contains a lightweight Dockerfile and requirements file. It copies `app.py` and `model.joblib`, installs dependencies, and sets `MODEL_PATH` automatically. Push the folder to a Space (or build the image yourself) and the container will pick up `.env` if you add it next to `app.py`.
-- **Static UI**: once the API is reachable, open `docs/ui/index.html` in a browser. Every input is a dropdown with a "Lainnya" option so non-technical users can still enter custom values.
+- **Static UI**: once the API is reachable, open `docs/ui/index.html` in a browser. Every input is a dropdown with an "Other" option so non-technical users can still enter custom values.
 
 
 ## Repository layout
