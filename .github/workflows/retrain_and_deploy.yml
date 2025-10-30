@@ -3,7 +3,7 @@ name: Retrain, Publish Docs, Deploy Space
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 3 * * 1"   # Senin 10:00 WIB
+    - cron: "0 3 * * 1"
 
 permissions:
   contents: write
@@ -19,24 +19,37 @@ jobs:
           python-version: "3.11"
 
       - name: Install deps
-        run: pip install -r requirements.txt
+        run: |
+          pip install -r requirements.txt
+          python -V
+          pip show pandas scikit-learn evidently openpyxl || true
 
       - name: Run pipeline
         env:
           DATAGOV_API_KEY: ${{ secrets.DATAGOV_API_KEY }}
         run: |
+          set -e
           python -m src.data.ingest
           python -m src.data.validate || true
           python -m src.features.build_features
           python -m src.models.train
           python -m src.models.evaluate
           python -m src.monitoring.generate_report
+          echo "=== AFTER PIPELINE ==="
+          ls -lah artifacts || true
+          ls -lah docs || true
+          test -f artifacts/model.joblib
+          test -f docs/eval.json
+          test -f docs/report.html
 
       - name: Gate if F1 < 0.70
         run: |
           python - <<'PY'
-          import json,sys
-          m=json.load(open('docs/eval.json','r',encoding='utf-8'))
+          import json,sys,os
+          p='docs/eval.json'
+          if not os.path.exists(p):
+              print('eval.json missing'); sys.exit(1)
+          m=json.load(open(p,'r',encoding='utf-8'))
           f1 = m.get('f1_macro') or m.get('f1') or 0
           print('F1=', f1)
           sys.exit(0 if f1>=0.70 else 1)
@@ -44,7 +57,8 @@ jobs:
 
       - name: Commit docs & model
         run: |
-          cp artifacts/model.joblib serving/model.joblib
+          mkdir -p serving
+          cp -f artifacts/model.joblib serving/model.joblib
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add docs/eval.json docs/report.html serving/model.joblib || true
