@@ -4,7 +4,7 @@ This repository hosts a teaching project that estimates whether a United States 
 
 > **Important:** this project is for learning only. The predictions are generated from public LCA disclosure data and a lightweight model. They are **not** a substitute for legal advice or official determinations.
 
-## What you can explore
+## Explore Material
 - Download the latest public LCA disclosure dataset from data.gov (or fall back to a synthetic sample if an API key is not provided).
 - Validate input tables against a Pandera schema before training.
 - Build features, train a logistic regression model, and log metrics to MLflow.
@@ -12,7 +12,7 @@ This repository hosts a teaching project that estimates whether a United States 
 - Serve predictions through a FastAPI endpoint and interact via the dropdown-friendly UI in `docs/ui`.
 
 ## Live demo
-- **User interface** (GitHub Pages): https://gr1clev.github.io/usa-work-visa-prediction-ml-logistic-regression/ui/  
+- **User interface** (GitHub Pages): https://gr1clev.github.io/usa-work-visa-prediction-MLFlow-logistic-regression/ui/
   When the page loads, set the "API Address" field to `https://gchrd-visa-lca-api.hf.space` before clicking **Predict**.
 - **Prediction API** (Hugging Face Space): https://gchrd-visa-lca-api.hf.space/  
   A health check is available at `/health`, and predictions can be requested via `/predict` with a JSON payload.
@@ -38,7 +38,7 @@ uvicorn src.serving.app:app --reload --port 8000
 ```
 
 ## Environment variables
-Set these in a `.env` file (see `.env.example`) or your shell as needed:
+Set these in a `.env` file (see `.env.example`) or shell as needed:
 
 | Variable | Purpose |
 |----------|---------|
@@ -71,4 +71,3 @@ docs/ui/{index.html, styles.css, script.js}
 artifacts/
 ```
 
-Enjoy experimenting, and feel free to adapt the workflow to other regions or visa processes once you have suitable local data.
