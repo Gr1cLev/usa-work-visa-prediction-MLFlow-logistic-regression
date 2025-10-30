@@ -1,0 +1,14 @@
+artifact_uri: file:///D:/Machine%20Learning/visa_lca_mlops_portofolio/mlruns/941725179246547248/d4a092912164475b8da07d6ed9e38c5d/artifacts
+end_time: 1761801939274
+entry_point_name: ''
+experiment_id: '941725179246547248'
+lifecycle_stage: active
+run_id: d4a092912164475b8da07d6ed9e38c5d
+run_name: awesome-crab-548
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1761801938931
+status: 3
+tags: []
+user_id: Richie

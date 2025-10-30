@@ -1,6 +1,9 @@
-import json, joblib, pandas as pd
+import json
 from pathlib import Path
-from sklearn.metrics import classification_report, confusion_matrix
+
+import joblib
+import pandas as pd
+from sklearn.metrics import classification_report, confusion_matrix, f1_score
 
 BASE = Path(__file__).resolve().parents[2]
 PROC = BASE / "data" / "processed"
@@ -15,7 +18,13 @@ def main():
     yhat = model.predict(X)
     report = classification_report(y, yhat, output_dict=True)
     cm = confusion_matrix(y, yhat).tolist()
-    (DOC / "eval.json").write_text(json.dumps({"report": report, "confusion_matrix": cm}, indent=2))
+    metrics = {
+        "f1_macro": f1_score(y, yhat, average="macro"),
+        "f1_weighted": f1_score(y, yhat, average="weighted"),
+        "f1_positive": f1_score(y, yhat, pos_label=1),
+    }
+    payload = {"report": report, "confusion_matrix": cm, **metrics}
+    (DOC / "eval.json").write_text(json.dumps(payload, indent=2))
     print("[Eval] wrote docs/eval.json")
 
 if __name__ == "__main__":

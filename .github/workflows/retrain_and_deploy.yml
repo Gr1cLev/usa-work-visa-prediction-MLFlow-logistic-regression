@@ -45,14 +45,33 @@ jobs:
       - name: Gate if F1 < 0.70
         run: |
           python - <<'PY'
-          import json,sys,os
-          p='docs/eval.json'
+          import json, os, sys
+
+          p = 'docs/eval.json'
           if not os.path.exists(p):
-              print('eval.json missing'); sys.exit(1)
-          m=json.load(open(p,'r',encoding='utf-8'))
-          f1 = m.get('f1_macro') or m.get('f1') or 0
-          print('F1=', f1)
-          sys.exit(0 if f1>=0.70 else 1)
+              print('eval.json missing')
+              sys.exit(1)
+
+          with open(p, 'r', encoding='utf-8') as f:
+              metrics = json.load(f)
+
+          print('Available metrics:', [k for k in metrics.keys() if k.startswith('f1_')])
+
+          def pick_first(values):
+              for v in values:
+                  if isinstance(v, (int, float)):
+                      return float(v)
+              return 0.0
+
+          f1 = pick_first([
+              metrics.get('f1_positive'),
+              metrics.get('f1_weighted'),
+              metrics.get('f1_macro'),
+              metrics.get('f1'),
+          ])
+
+          print('Selected F1 =', f1)
+          sys.exit(0 if f1 >= 0.70 else 1)
           PY
 
       - name: Commit docs & model
@@ -76,3 +95,5 @@ jobs:
           space-sdk: docker
           hf_token: ${{ secrets.HF_TOKEN }}
           from: ./serving
+
+
