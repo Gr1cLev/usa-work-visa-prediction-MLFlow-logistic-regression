@@ -89,10 +89,42 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: huggingface/hub-actions@v1
+
+      - uses: actions/setup-python@v5
         with:
-          repo-id: ${{ secrets.HF_SPACE_REPO }}
-          token: ${{ secrets.HF_TOKEN }}
-          folder: ./serving
-          space-sdk: docker
-          commit-message: "update space"
+          python-version: "3.11"
+
+      - name: Install deploy deps
+        run: pip install "huggingface_hub>=1.0.1"
+
+      - name: Upload serving folder to Hugging Face Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_SPACE_REPO: ${{ secrets.HF_SPACE_REPO }}
+        run: |
+          python - <<'PY'
+          import os, sys
+          from huggingface_hub import HfApi
+
+          token = os.getenv('HF_TOKEN')
+          repo_id = os.getenv('HF_SPACE_REPO')
+
+          if not token:
+              print('HF_TOKEN is missing')
+              sys.exit(1)
+          if not repo_id:
+              print('HF_SPACE_REPO is missing')
+              sys.exit(1)
+
+          api = HfApi(token=token)
+          api.create_repo(repo_id=repo_id, repo_type="space", space_sdk="docker", exist_ok=True)
+          api.upload_folder(
+              folder_path="serving",
+              repo_id=repo_id,
+              repo_type="space",
+              token=token,
+              commit_message="Update Space from GitHub Actions",
+              ignore_patterns=["__pycache__"],
+          )
+          print('Uploaded to', repo_id)
+          PY
