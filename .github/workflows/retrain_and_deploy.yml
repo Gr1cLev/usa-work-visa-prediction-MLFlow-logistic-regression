@@ -89,11 +89,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: huggingface/action-push-to-space@v1
+      - uses: huggingface/hub-actions@v1
         with:
           repo-id: ${{ secrets.HF_SPACE_REPO }}
+          token: ${{ secrets.HF_TOKEN }}
+          folder: ./serving
           space-sdk: docker
-          hf_token: ${{ secrets.HF_TOKEN }}
-          from: ./serving
-
-
+          commit-message: "update space"
