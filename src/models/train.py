@@ -8,6 +8,12 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import f1_score
 
+from pathlib import Path; import json, time
+(Path("artifacts")/"version.json").write_text(
+  json.dumps({"trained_at_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ"), "f1": float(f1)})
+)
+
+
 BASE = Path(__file__).resolve().parents[2]
 PROC = BASE / "data" / "processed"
 ART = BASE / "artifacts"

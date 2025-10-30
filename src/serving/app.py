@@ -1,7 +1,34 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, Field
-import joblib, os, pandas as pd
+import joblib, os, pandas as pd, json, re
+from pydantic import BaseModel, Field, field_validator
+
+US = {"AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VA","VT","WA","WI","WV","WY","DC"}
+
+class Payload(BaseModel):
+    FULL_TIME_POSITION: str = Field(pattern="^[YN]$")
+    EMPLOYER_STATE: str
+    WORKSITE_STATE: str
+    SOC_CODE: str
+    WAGE_RATE: float
+    @field_validator("EMPLOYER_STATE","WORKSITE_STATE")
+    @classmethod
+    def v_state(cls,v): 
+        v=v.upper(); 
+        if v not in US: raise ValueError("invalid state"); 
+        return v
+    @field_validator("SOC_CODE")
+    @classmethod
+    def v_soc(cls,v):
+        if not re.match(r"^\d{2}-\d{4}$", v): raise ValueError("invalid SOC code")
+        return v
+
+VER_PATH = os.getenv("VERSION_PATH","version.json")
+@app.get("/version")
+def version():
+    try: return json.load(open(VER_PATH))
+    except: return {"trained_at_utc": None, "f1": None}
+
 
 MODEL_PATH = os.getenv("MODEL_PATH", "artifacts/model.joblib")
 

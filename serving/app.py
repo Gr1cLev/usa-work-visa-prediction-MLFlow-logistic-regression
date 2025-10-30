@@ -1,4 +1,5 @@
 import os
+import json 
 from pathlib import Path
 
 import joblib
@@ -55,5 +56,21 @@ def predict(p: RequestPayload):
     if _model is None:
         return {"error": "Model not loaded. Train first."}
     df = pd.DataFrame([p.dict()])
-    proba = _model.predict_proba(df)[0,1]
-    return {"label": "CERTIFIED" if proba>=0.5 else "DENIED", "proba_certified": round(float(proba),4)}
+    proba = _model.predict_proba(df)[0, 1]
+
+    result = {
+        "label": "CERTIFIED" if proba >= 0.5 else "DENIED",
+        "proba_certified": round(float(proba), 4)
+    }
+
+    try:
+        with open("inference_log.jsonl", "a", encoding="utf-8") as f:
+            f.write(json.dumps({
+                "req": p.dict(),
+                "pred": result["label"],
+                "proba": float(proba)
+            }) + "\n")
+    except Exception:
+        pass
+
+    return result
