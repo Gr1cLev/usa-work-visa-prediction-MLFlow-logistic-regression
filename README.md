@@ -1,4 +1,9 @@
 # usa-work-visa-prediction-ml-logistic-regression
+[![CI](https://github.com/Gr1cLev/usa-work-visa-prediction-MLFlow-logistic-regression/actions/workflows/ci.yml/badge.svg)](https://github.com/Gr1cLev/usa-work-visa-prediction-MLFlow-logistic-regression/actions/workflows/ci.yml)
+[![Retrain & Deploy](https://github.com/Gr1cLev/usa-work-visa-prediction-MLFlow-logistic-regression/actions/workflows/retrain_and_deploy.yml/badge.svg)](https://github.com/Gr1cLev/usa-work-visa-prediction-MLFlow-logistic-regression/actions/workflows/retrain_and_deploy.yml)
+[![HF Space](https://img.shields.io/badge/Space-live-brightgreen?logo=huggingface)](https://huggingface.co/spaces/gchrd/visa-lca-api)
+[![UI Demo](https://img.shields.io/badge/UI-GitHub%20Pages-blue)](https://gr1clev.github.io/usa-work-visa-prediction-MLFlow-logistic-regression/ui/)
+
 
 This repository hosts a project that estimates whether a United States work visa Labor Condition Application (LCA) is likely to be **certified** or **denied**. The classifier uses logistic regression and demonstrates an end-to-end MLOps workflow covering ingestion, validation, feature engineering, MLflow-backed training, evaluation, monitoring with Evidently, automated redeployment to Hugging Face Spaces, and a FastAPI + static web UI.
 
