@@ -78,9 +78,12 @@ jobs:
         run: |
           mkdir -p serving
           cp -f artifacts/model.joblib serving/model.joblib
+          if [ -f artifacts/version.json ]; then
+            cp -f artifacts/version.json serving/version.json
+          fi
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add docs/eval.json docs/report.html serving/model.joblib || true
+          git add docs/eval.json docs/report.html serving/model.joblib serving/version.json || true
           git diff --cached --quiet || git commit -m "auto: retrain, publish, update model"
           git push
 
